@@ -34,3 +34,6 @@ build/
 
 ###Libraries###
 /lib
+
+###Config files###
+src/main/resources/application.properties
