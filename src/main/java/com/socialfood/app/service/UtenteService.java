@@ -57,4 +57,8 @@ public class UtenteService {
         else
             return false;
     }
+
+    public Integer getId(Utente u){
+        return utenteCrudRepository.findByUsername(u.getUsername()).getIdUtente();
+    }
 }
