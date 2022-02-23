@@ -10,6 +10,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPost;
+    private String titolo;
     private String testo;
     private java.sql.Timestamp dataCreazione;
     private java.sql.Timestamp dataUltimoAggiornamento;
@@ -20,8 +21,8 @@ public class Post {
 
     @ManyToMany
     @JoinTable(name = "likes",
-               joinColumns = @JoinColumn(name = "idPost"),
-               inverseJoinColumns = @JoinColumn(name = "idUtente"))
+            joinColumns = @JoinColumn(name = "idPost"),
+            inverseJoinColumns = @JoinColumn(name = "idUtente"))
     private List<Utente> likes = null;
 
     @ManyToMany
@@ -32,8 +33,14 @@ public class Post {
 
     public Post() {}
 
-    public Post(String testo, Timestamp dataCreazione, Timestamp dataUltimoAggiornamento, Utente proprietario) {
+    public Post(String titolo, String testo) {
+        this.titolo = titolo;
         this.testo = testo;
+    }
+
+    public Post(String testo, String titolo, Timestamp dataCreazione, Timestamp dataUltimoAggiornamento, Utente proprietario) {
+        this.testo = testo;
+        this.titolo = titolo;
         this.dataCreazione = dataCreazione;
         this.dataUltimoAggiornamento = dataUltimoAggiornamento;
         this.proprietario = proprietario;
@@ -93,6 +100,14 @@ public class Post {
 
     public void setDislikes(List<Utente> dislikes) {
         this.dislikes = dislikes;
+    }
+
+    public String getTitolo() {
+        return titolo;
+    }
+
+    public void setTitolo(String titolo) {
+        this.titolo = titolo;
     }
 
     @Override

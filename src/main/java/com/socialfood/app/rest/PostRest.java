@@ -2,44 +2,31 @@ package com.socialfood.app.rest;
 
 import com.socialfood.app.model.Post;
 import com.socialfood.app.model.Utente;
-import com.socialfood.app.repository.UtenteCrudRepository;
+import com.socialfood.app.service.PostService;
 import com.socialfood.app.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = { "/rest/utente" }, produces = { "application/json" }, consumes = { "application/json" })
+@RequestMapping(path = { "/rest/post" }, produces = { "application/json" }, consumes = { "application/json" })
 @CrossOrigin(origins = { "*" })
-public class UtenteRest {
+public class PostRest {
     @Autowired
     UtenteService utenteService;
+    @Autowired
+    PostService postService;
 
-    @PostMapping(path = {"/registrazione"})
-    public ResponseEntity<Utente> registrazione(@RequestBody Utente nuovoUtente) {
-        try {
-            Utente utente = utenteService.findByUsername(nuovoUtente.getUsername());
-
-            if (utente == null) {
-                utente = utenteService.creaUtente(nuovoUtente);
-                return new ResponseEntity<>(utente, HttpStatus.CREATED);
-            } else
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping(path = {"/login"})
-    public ResponseEntity<String> login(@RequestBody Utente u) {
+    @GetMapping(path = {"/creaPost"})
+    public ResponseEntity<String> creaPost(@RequestBody Utente u, @RequestBody Post p) {
         try {
             String login = utenteService.doLogin(u);
 
             switch (login) {
                 case "OK":
-                    return new ResponseEntity<>(HttpStatus.OK); //login effettuato
+                    postService.creaPost(p);
+                    return new ResponseEntity<>(HttpStatus.CREATED); //post creato
 
                 case "usernameError":
                     return new ResponseEntity<>("usernameError",HttpStatus.BAD_REQUEST); //username non esiste
@@ -55,5 +42,4 @@ public class UtenteRest {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //errore generico
         }
     }
-
 }
