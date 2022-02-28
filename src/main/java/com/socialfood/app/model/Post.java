@@ -17,7 +17,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "utente")
-    private Utente proprietario = null;
+    private Utente utente = null;
 
     @ManyToMany
     @JoinTable(name = "likes",
@@ -38,12 +38,12 @@ public class Post {
         this.testo = testo;
     }
 
-    public Post(String testo, String titolo, Timestamp dataCreazione, Timestamp dataUltimoAggiornamento, Utente proprietario) {
+    public Post(String testo, String titolo, Timestamp dataCreazione, Timestamp dataUltimoAggiornamento, Utente u) {
         this.testo = testo;
         this.titolo = titolo;
         this.dataCreazione = dataCreazione;
         this.dataUltimoAggiornamento = dataUltimoAggiornamento;
-        this.proprietario = proprietario;
+        this.utente = u;
     }
 
     public Integer getIdPost() {
@@ -78,12 +78,12 @@ public class Post {
         this.dataUltimoAggiornamento = dataUltimoAggiornamento;
     }
 
-    public Utente getProprietario() {
-        return proprietario;
+    public Utente getUtente() {
+        return utente;
     }
 
-    public void setProprietario(Utente proprietario) {
-        this.proprietario = proprietario;
+    public void setUtente(Utente u) {
+        this.utente = u;
     }
 
     public List<Utente> getLikes() {

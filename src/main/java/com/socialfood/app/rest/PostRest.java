@@ -9,7 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = { "/rest/post" }, produces = { "application/json" }, consumes = { "application/json" })
@@ -20,18 +23,24 @@ public class PostRest {
     @Autowired
     PostService postService;
 
-    @GetMapping(path = {"/creaPost"})
-    public ResponseEntity<String> creaPost(@RequestBody Utente u, @RequestBody Post p) {
+    @PostMapping(path = {"/creaPost"})
+    public ResponseEntity<String> creaPost(@RequestBody Map<String,String> body) {
         try {
-            String login = utenteService.doLogin(u);
+            String login = utenteService.doLogin(new Utente(body.get("username"), body.get("password")));
 
             switch (login) {
                 case "OK":
-                    postService.creaPost(p);
+                    Utente u = utenteService.getUtenteByUsername(body.get("username"));
+                    Post daInserire = new Post( body.get("testo"),
+                                                body.get("titolo"),
+                                                Timestamp.valueOf(LocalDateTime.now()),
+                                                Timestamp.valueOf(LocalDateTime.now()),
+                                                u);
+                    postService.creaPost(daInserire);
                     return new ResponseEntity<>(HttpStatus.CREATED); //post creato
 
                 case "usernameError":
-                    return new ResponseEntity<>("usernameError",HttpStatus.BAD_REQUEST); //username non esiste
+                    return new ResponseEntity<>("usernameError", HttpStatus.BAD_REQUEST); //username non esiste
 
                 case "passwordError":
                     return new ResponseEntity<>("passwordError",HttpStatus.BAD_REQUEST); //password errata
@@ -46,21 +55,20 @@ public class PostRest {
     }
 
     @GetMapping(path = {"/visualizzaPosts"})
-    public ResponseEntity<String> visualizzaPosts(@RequestBody Utente u) {
+    public ResponseEntity<Object> visualizzaPosts(@RequestBody Utente u) {
         try {
             String login = utenteService.doLogin(u);
 
             switch (login) {
                 case "OK":
-                    Integer id = utenteService.getId(u);
-                    List<Post> posts = postService.selectAll(id);
-                    return new ResponseEntity<>(HttpStatus.CREATED); //post creato
+                    Utente current = utenteService.getUtenteByUsername(u.getUsername());
+                    return new ResponseEntity<>(current.getPosts(),HttpStatus.CREATED);
 
                 case "usernameError":
-                    return new ResponseEntity<>("usernameError",HttpStatus.BAD_REQUEST); //username non esiste
+                    return new ResponseEntity<>("usernameError", HttpStatus.BAD_REQUEST); //username non esiste
 
                 case "passwordError":
-                    return new ResponseEntity<>("passwordError",HttpStatus.BAD_REQUEST); //password errata
+                    return new ResponseEntity<>("passwordError", HttpStatus.BAD_REQUEST); //password errata
 
                 default:
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //errore generico

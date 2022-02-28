@@ -15,7 +15,7 @@ public class Utente {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "proprietario")
+    @OneToMany(mappedBy = "utente")
     private List<Post> posts = null;
 
     @ManyToMany(mappedBy = "likes")
@@ -29,6 +29,10 @@ public class Utente {
     private Ruolo ruolo = null;
 
     public Utente() {}
+
+    public Utente(Integer id) {
+        this.idUtente = id;
+    }
 
     public Utente(String username, String password) {
         this.username = username;
