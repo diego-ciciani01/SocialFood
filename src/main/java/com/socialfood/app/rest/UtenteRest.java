@@ -32,7 +32,7 @@ public class UtenteRest {
         }
     }
 
-    @GetMapping(path = {"/login"})
+    @PostMapping(path = {"/login"})
     public ResponseEntity<String> login(@RequestBody Utente u) {
         try {
             String login = utenteService.doLogin(u);

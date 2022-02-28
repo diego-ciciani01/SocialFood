@@ -1,6 +1,7 @@
 package com.socialfood.app.rest;
 
 import com.socialfood.app.model.Post;
+import com.socialfood.app.model.PostDTO;
 import com.socialfood.app.model.Utente;
 import com.socialfood.app.service.PostService;
 import com.socialfood.app.service.UtenteService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,20 +57,33 @@ public class PostRest {
     }
 
     @GetMapping(path = {"/visualizzaPosts"})
-    public ResponseEntity<Object> visualizzaPosts(@RequestBody Utente u) {
+    public ResponseEntity<List<PostDTO>> visualizzaPosts(@RequestBody Map<String,String> body) {
         try {
-            String login = utenteService.doLogin(u);
+            String login = utenteService.doLogin(new Utente(body.get("username"), body.get("password")));
 
             switch (login) {
                 case "OK":
-                    Utente current = utenteService.getUtenteByUsername(u.getUsername());
-                    return new ResponseEntity<>(current.getPosts(),HttpStatus.CREATED);
+                    Utente daCercare = utenteService.getUtenteByUsername(body.get("daCercare"));
+
+                    if(daCercare != null) {
+                        List<Post> posts = postService.selectAll(daCercare.getIdUtente());
+                        if(posts.isEmpty())
+                            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                        List<PostDTO> postsDTO = new ArrayList<>();
+                        for (Post post : posts) {
+                            postsDTO.add(new PostDTO(post));
+                        }
+                        return new ResponseEntity<>(postsDTO, HttpStatus.OK);
+                    }
+                    else{
+                        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    }
 
                 case "usernameError":
-                    return new ResponseEntity<>("usernameError", HttpStatus.BAD_REQUEST); //username non esiste
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //username non esiste
 
                 case "passwordError":
-                    return new ResponseEntity<>("passwordError", HttpStatus.BAD_REQUEST); //password errata
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //password errata
 
                 default:
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //errore generico
