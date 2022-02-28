@@ -1,6 +1,7 @@
 package com.socialfood.app.service;
 
 import com.socialfood.app.model.Post;
+import com.socialfood.app.model.Utente;
 import com.socialfood.app.repository.PostCrudRepository;
 import com.socialfood.app.repository.UtenteCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class PostService {
         postCrudRepository.save(p);
     }
     
-    public List<Post> selectAll(Integer idUtente ){
-        return postCrudRepository.findAllByUtente(idUtente);
+    public List<Post> selectAll(Integer id){
+        return postCrudRepository.findAllByUtente(new Utente(id));
     }
     
 }

@@ -59,6 +59,10 @@ public class UtenteService {
     }
 
     public Integer getId(Utente u){
-        return utenteCrudRepository.findByUsername(u.getUsername()).getIdUtente();
+        return this.getUtenteByUsername(u.getUsername()).getIdUtente();
+    }
+
+    public Utente getUtenteByUsername(String username){
+        return utenteCrudRepository.findByUsername(username);
     }
 }
