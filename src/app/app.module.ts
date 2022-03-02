@@ -8,17 +8,20 @@ import { LoginComponent } from './login/login.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { RegistrazioneComponent } from './registrazione/registrazione.component';
+import { HomepageComponent } from './homepage/homepage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegistrazioneComponent
+    RegistrazioneComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgbModule,
+    AppRoutingModule,
     ReactiveFormsModule,
     AppRoutingModule
   ],

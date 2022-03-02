@@ -17,9 +17,14 @@ export class CentralServiceService {
       this.user = data.headers.get('Auth');
      })
    )
+  }
 
-
-    
+  getRegistrazione(cred:{  nome:string, cognome:string, email:string, username:string, password:string}):Observable<any>{
+    return this.http.post("http://localhost:8081/rest/utente/registrazione",cred, {observe:'response'}).pipe(
+      tap((data:HttpResponse<any>) => {
+        this.user = data.headers.get('Auth');
+      })
+    )
   }
 
 
