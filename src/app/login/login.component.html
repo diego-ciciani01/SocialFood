@@ -1,3 +1,8 @@
+<style>
+    a {text-decoration: none;
+       color: #fff; }
+
+</style>
 <div class="row"> 
     <div class="col-6 mx-auto">
         <form [formGroup]="formLogin" (ngSubmit)="login()" >
@@ -11,8 +16,8 @@
             </div>
             <br>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" routerLink="=/homepage" routerLinkActive="active" >Login</button>
-                <a routerLink="/registrazione" routerLinkActive="active">Registrati</a>
+                <button type="submit" class="btn btn-primary" >Login</button>
+                <button class="btn btn-primary"><a style="text-decoration: none;" routerLink="/registrazione" routerLinkActive="active">Registrati</a></button>
             </div>
         </form>
     </div>

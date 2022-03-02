@@ -31,7 +31,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: this.formLogin.get('password')?.value
     }
     this.central.getLogin(cred).subscribe({
-      next:()=>console.log("accesso"),
+      next:()=>{
+        console.log("accesso");
+        this.router.navigateByUrl('homepage');
+      },
       error:()=>console.log("credenziali sbagliate")
        
     });
