@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegistrazioneComponent } from './registrazione/registrazione.component';
-
+import { HomepageComponent } from './homepage/homepage.component';
 const routes: Routes = [
   {
     path: 'login',
@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'registrazione',
     component: RegistrazioneComponent
+  },
+  {
+    path: 'homepage',
+    component: HomepageComponent
   },
   {
     path: '',
