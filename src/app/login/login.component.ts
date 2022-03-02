@@ -14,15 +14,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   formLogin: FormGroup = new FormGroup({});
   private sub = new Subscription;
   constructor(private central: CentralServiceService, private router: Router) { }
-  
+
   ngOnInit(): void {
-      this.formLogin = new FormGroup({
-        username: new FormControl('', Validators.required),
-        password: new FormControl('', Validators.required)
-      })
+    this.formLogin = new FormGroup({
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required)
+    })
   }
 
-  login(){
+  login() {
     const cred: {
       username: string,
       password: string
@@ -30,17 +30,17 @@ export class LoginComponent implements OnInit, OnDestroy {
       username: this.formLogin.get('username')?.value,
       password: this.formLogin.get('password')?.value
     }
-    this.central.getLogin(cred).subscribe({
-      next:()=>{
+    this.central.postLogin(cred).subscribe({
+      next: () => {
         console.log("accesso");
         this.router.navigateByUrl('homepage');
       },
-      error:()=>console.log("credenziali sbagliate")
-       
+      error: () => console.log("credenziali sbagliate")
+
     });
   }
   ngOnDestroy(): void {
-    if(this.sub){
+    if (this.sub) {
       this.sub.unsubscribe();
     }
   }

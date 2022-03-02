@@ -11,7 +11,7 @@ export class CentralServiceService {
 
   constructor(private http: HttpClient) { }
 
-  getLogin(cred:{username:string, password:string}): Observable<any>{
+  postLogin(cred:{username:string, password:string}): Observable<any>{
    return this.http.post('http://localhost:8081/rest/utente/login', cred, {observe: 'response'}).pipe(
      tap((data:HttpResponse<any>) => {
       this.user = data.headers.get('Auth');
@@ -19,7 +19,7 @@ export class CentralServiceService {
    )
   }
 
-  getRegistrazione(cred:{  nome:string, cognome:string, email:string, username:string, password:string}):Observable<any>{
+  postRegistrazione(cred:{ nome:string, cognome:string, email:string, username:string, password:string}):Observable<any>{
     return this.http.post("http://localhost:8081/rest/utente/registrazione",cred, {observe:'response'}).pipe(
       tap((data:HttpResponse<any>) => {
         this.user = data.headers.get('Auth');

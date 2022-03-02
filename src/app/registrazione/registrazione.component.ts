@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
@@ -8,7 +8,7 @@ import { CentralServiceService } from '../services/central-service.service';
   templateUrl: './registrazione.component.html',
   styleUrls: ['./registrazione.component.css']
 })
-export class RegistrazioneComponent implements OnInit,OnDestroy {
+export class RegistrazioneComponent implements OnInit, OnDestroy {
 
 
   formRegistrati: FormGroup = new FormGroup({});
@@ -41,9 +41,17 @@ export class RegistrazioneComponent implements OnInit,OnDestroy {
       password: this.formRegistrati.get('password')?.value
 
     }
+
+    this.central.postRegistrazione(cred).subscribe({
+      next: () => {
+        console.log("registrax");
+        this.router.navigateByUrl('login');
+      }
+    });
   }
+
   ngOnDestroy(): void {
-    if(this.sub){
+    if (this.sub) {
       this.sub.unsubscribe();
     }
   }
