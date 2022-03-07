@@ -1,10 +1,17 @@
 package com.socialfood.app.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
+@Transactional
 @Table(name = "Post")
 public class Post {
     @Id
@@ -19,13 +26,15 @@ public class Post {
     @JoinColumn(name = "utente")
     private Utente utente = null;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "likes",
             joinColumns = @JoinColumn(name = "idPost"),
             inverseJoinColumns = @JoinColumn(name = "idUtente"))
     private List<Utente> likes = null;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "dislikes",
             joinColumns = @JoinColumn(name = "idPost"),
             inverseJoinColumns = @JoinColumn(name = "idUtente"))

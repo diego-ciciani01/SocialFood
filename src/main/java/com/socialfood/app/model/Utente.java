@@ -1,9 +1,12 @@
 package com.socialfood.app.model;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Transactional
 @Table(name = "Utente")
 public class Utente {
     @Id
@@ -136,8 +139,13 @@ public class Utente {
         Utente utente = (Utente) o;
 
         if (!idUtente.equals(utente.idUtente)) return false;
-        if (!username.equals(utente.username)) return false;
-        return email != null ? email.equals(utente.email) : utente.email == null;
+        return username.equals(utente.username);
     }
 
+    @Override
+    public int hashCode() {
+        int result = idUtente.hashCode();
+        result = 31 * result + username.hashCode();
+        return result;
+    }
 }

@@ -16,8 +16,6 @@ import java.util.List;
 @Transactional
 public class PostService {
     @Autowired
-    private UtenteCrudRepository utenteCrudRepository;
-    @Autowired
     private PostCrudRepository postCrudRepository;
 
     public void creaPost(Post p) {
@@ -56,4 +54,26 @@ public class PostService {
         p.setTesto(testo);
         postCrudRepository.save(p);
     }
+
+    public void aggiungiLike(Post postLiked, Utente liker) {
+        postLiked.getLikes().add(liker);
+        postCrudRepository.save(postLiked);
+    }
+
+    public void rimuoviLike(Post postDisliked, Utente disliker) {
+        postDisliked.getLikes().remove(disliker);
+        postCrudRepository.save(postDisliked);
+    }
+
+    public void aggiungiDislike(Post postDisliked, Utente disliker) {
+        postDisliked.getDislikes().add(disliker);
+        postCrudRepository.save(postDisliked);
+    }
+
+    public void rimuoviDislike(Post postLiked, Utente liker) {
+        postLiked.getDislikes().remove(liker);
+        postCrudRepository.save(postLiked);
+    }
+
+
 }
