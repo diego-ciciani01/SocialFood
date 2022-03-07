@@ -1,8 +1,10 @@
 package com.socialfood.app.service;
 
 import com.socialfood.app.model.Post;
+import com.socialfood.app.model.Ruolo;
 import com.socialfood.app.model.Utente;
 import com.socialfood.app.repository.PostCrudRepository;
+import com.socialfood.app.repository.RuoloCrudRepository;
 import com.socialfood.app.repository.UtenteCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ public class UtenteService {
     @Autowired
     private UtenteCrudRepository utenteCrudRepository;
     @Autowired
-    private PostCrudRepository postCrudRepository;
+    private RuoloCrudRepository ruoloCrudRepository;
 
     public Utente findByUsername(String username) {
         return utenteCrudRepository.findByUsername(username);
@@ -64,5 +66,18 @@ public class UtenteService {
 
     public Utente getUtenteByUsername(String username){
         return utenteCrudRepository.findByUsername(username);
+    }
+
+    public void setRuolo(Utente user, Ruolo ruolo) {
+        Ruolo esistente = ruoloCrudRepository.findByNome(ruolo.getNome());
+
+        if(esistente == null) {
+            ruoloCrudRepository.save(ruolo);
+            user.setRuolo(ruolo);
+        }
+        else
+            user.setRuolo(esistente);
+
+        utenteCrudRepository.save(user);
     }
 }

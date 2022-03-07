@@ -13,7 +13,7 @@ public class Ruolo{
     private Boolean admin = null;
 
     @OneToMany(mappedBy = "ruolo")
-    private List<Utente> ruoli = null;
+    private List<Utente> ruolo = null;
 
     public Ruolo() {}
 
@@ -47,11 +47,11 @@ public class Ruolo{
     }
 
     public List<Utente> getRuoli() {
-        return ruoli;
+        return ruolo;
     }
 
-    public void setRuoli(List<Utente> ruoli) {
-        this.ruoli = ruoli;
+    public void setRuoli(List<Utente> ruolo) {
+        this.ruolo = ruolo;
     }
 
     @Override
@@ -61,8 +61,6 @@ public class Ruolo{
 
         Ruolo ruolo = (Ruolo) o;
 
-        if (!idRuolo.equals(ruolo.idRuolo)) return false;
-        return nome.equals(ruolo.nome);
+        return nome.equalsIgnoreCase(ruolo.nome);
     }
-
 }

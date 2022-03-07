@@ -210,4 +210,45 @@ public class PostRest {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //errore generico
         }
     }
+
+    @DeleteMapping(path = {"/rimuoviPost"})
+    public ResponseEntity<String> rimuoviPost(@RequestBody Map<String,String> body) {
+        try {
+            String username = body.get("username");
+            String password = body.get("password");
+            Integer idPost = Integer.parseInt(body.get("idPost"));
+
+            String login = utenteService.doLogin(new Utente(username, password));
+
+            if(login.equals("usernameError") || login.equals("passwordError"))
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //username o password errata
+            else if(login.equals("OK")){
+                Utente remover = utenteService.getUtenteByUsername(username);
+                Integer idUtente = remover.getIdUtente();
+                Post postRemoved = postService.getPostById(idPost);
+                if(postRemoved != null) {
+                    if(postRemoved.getUtente().getIdUtente() == idUtente) {
+                        postService.rimuoviPost(postRemoved);
+                        return new ResponseEntity<>(HttpStatus.NO_CONTENT); //post rimosso
+                    }
+                    else if (remover.getRuolo().getAdmin()) {
+                        postService.rimuoviPost(postRemoved);
+                        return new ResponseEntity<>(HttpStatus.NO_CONTENT); //post rimosso
+                    }
+                    else
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //rimozione non autorizzata
+
+                }
+                else{
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //post non trovato
+                }
+            }
+            else
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //errore generico
+
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //errore generico
+        }
+    }
 }

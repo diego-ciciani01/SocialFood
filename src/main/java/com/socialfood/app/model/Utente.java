@@ -28,7 +28,7 @@ public class Utente {
     private List<Post> dislikedPost = null;
 
     @ManyToOne
-    @JoinColumn(name = "ruoli")
+    @JoinColumn(name = "ruolo")
     private Ruolo ruolo = null;
 
     public Utente() {}

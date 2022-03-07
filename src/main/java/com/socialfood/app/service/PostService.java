@@ -75,5 +75,10 @@ public class PostService {
         postCrudRepository.save(postLiked);
     }
 
-
+    public void rimuoviPost(Post postRemoved) {
+        postRemoved.setLikes(null);
+        postRemoved.setDislikes(null);
+        postCrudRepository.save(postRemoved);
+        postCrudRepository.delete(postRemoved);
+    }
 }
